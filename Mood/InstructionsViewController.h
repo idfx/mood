@@ -1,5 +1,5 @@
 //
-//  PageViewController.h
+//  InstructionsViewController.h
 //  Mood
 //
 //  Created by Juan on 2018-05-13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
+@interface InstructionsViewController : UIViewController
 
 @end

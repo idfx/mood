@@ -1,18 +1,18 @@
 //
-//  MyViewController.m
+//  InstructionsViewController.m
 //  Mood
 //
 //  Created by Juan on 2018-05-13.
 //  Copyright © 2018 Juan Lara. All rights reserved.
 //
 
-#import "MyViewController.h"
+#import "InstructionsViewController.h"
 
-@interface MyViewController ()
+@interface InstructionsViewController ()
 
 @end
 
-@implementation MyViewController
+@implementation InstructionsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

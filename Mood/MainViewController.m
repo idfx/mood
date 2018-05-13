@@ -7,11 +7,13 @@
 //
 
 #import "MainViewController.h"
+#import "AppDelegate.h"
 
 @interface MainViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *moodLbl;
 @property uint moodIndex;
+@property AppDelegate *appDelegate;
 
 @end
 
@@ -20,9 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _moods = @[@":'(", @":(", @":|", @":)", @":D"];
     _moodColours = @[[UIColor grayColor], [UIColor magentaColor], [UIColor yellowColor], [UIColor cyanColor], [UIColor greenColor]];
     _moodIndex = 2;
+    _appDelegate = ((AppDelegate*)[[UIApplication sharedApplication] delegate]);
+    
+    [self.savedLabel setAlpha:0.0f];
     [self refreshUI];
 }
 
@@ -32,7 +36,7 @@
 }
 
 - (IBAction)upBtnTouched:(id)sender {
-    if (_moodIndex<_moods.count - 1){
+    if (_moodIndex<_appDelegate.moods.count - 1){
         _moodIndex++;
         [self refreshUI];
     }
@@ -48,23 +52,52 @@
 //    NSLog(@"%i",_moodIndex);
 }
 
-- (IBAction)LongPressUp:(id)sender {
-    // Save current data point
-    NSLog(@"%i",_moodIndex);
+- (IBAction)LongPressUp:(UILongPressGestureRecognizer*)sender {
+    if (sender.state == UIGestureRecognizerStateBegan){
+        // Save current data point
+        NSLog(@"%i",_moodIndex);
+        [self SaveData];
+    }
 }
 
-- (IBAction)LongPressDown:(id)sender {
-    // Save current data point
-    NSLog(@"%i",_moodIndex);
+- (IBAction)LongPressDown:(UILongPressGestureRecognizer*)sender {
+    if (sender.state == UIGestureRecognizerStateBegan){
+        // Save current data point
+        NSLog(@"%i",_moodIndex);
+        [self SaveData];
+    }
 }
 
 - (void)refreshUI {
-    _moodLbl.text = _moods[_moodIndex];
+    _moodLbl.text = _appDelegate.moods[_moodIndex];
     self.view.backgroundColor = _moodColours[_moodIndex];
 }
 
-- (IBAction)unwindToMain:(UIStoryboardSegue *)segue {
+- (void)SaveData{
+    [self startFade:self];
     
+    NSManagedObject *entityNameObj = [NSEntityDescription insertNewObjectForEntityForName:@"MoodEntity" inManagedObjectContext:_appDelegate.persistentContainer.viewContext];
+    NSDate *now = [NSDate date];
+    NSUUID *uuid = [NSUUID UUID];
+    [entityNameObj setValue:now forKey:@"created"];
+    [entityNameObj setValue:uuid forKey:@"id"];
+    [entityNameObj setValue:now forKey:@"modified"];
+    [entityNameObj setValue:[NSNumber numberWithUnsignedInteger:_moodIndex] forKey:@"moodScore"];
+    
+    [_appDelegate saveContext];
+}
+
+-(IBAction)startFade:(id)sender {
+    [self.savedLabel setAlpha:0.0f];
+    //fade in
+    [UIView animateWithDuration:2.0f animations:^{
+        [self.savedLabel setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+        //fade out
+        [UIView animateWithDuration:2.0f animations:^{
+            [self.savedLabel setAlpha:0.0f];
+        } completion:nil];
+    }];
 }
 
 /*

@@ -7,14 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MyViewController.h"
 
-@interface MainViewController : MyViewController
+@interface MainViewController : UIViewController
 
 @property (nonatomic, readonly) uint myReadOnlyVar;
-@property (nonatomic, readonly) NSArray *moods;
 @property (nonatomic, readonly) NSArray *moodColours;
-
-- (IBAction)unwindToMain:(UIStoryboardSegue *)segue;
+@property (weak, nonatomic) IBOutlet UILabel *savedLabel;
 
 @end

@@ -10,6 +10,9 @@
 
 @interface PageViewController ()
 
+//@property NSUInteger index;
+@property NSArray *uiViewControllers;
+
 @end
 
 @implementation PageViewController
@@ -17,6 +20,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _uiViewControllers = [NSArray arrayWithObjects:
+                          [self.storyboard instantiateViewControllerWithIdentifier:@"MainViewController"],
+                          [self.storyboard instantiateViewControllerWithIdentifier:@"HistoricalDataTableViewController"],
+                          [self.storyboard instantiateViewControllerWithIdentifier:@"InstructionsViewController"], nil];
+    
+    self.dataSource = self;
+    
+    UIViewController *initialVC = _uiViewControllers[0];
+    NSArray *viewControllers = [NSArray arrayWithObject:initialVC];
+    [self setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -25,43 +38,21 @@
 }
 
 - (UIViewController *)pageViewController: (UIPageViewController *)pageViewController viewControllerBeforeViewController: (UIViewController *)viewController{
-    NSUInteger index = ((MyViewController *) viewController).pageIndex;
-    if (index == 0 || index == NSNotFound) {
+    NSUInteger index = [_uiViewControllers indexOfObject:viewController];
+    if (index == 0) {
         return nil;
     }
     index--;
-    return [self viewControllerAtIndex: index];
+    return _uiViewControllers[index];
 }
 
 - (UIViewController *)pageViewController: (UIPageViewController *)pageViewController viewControllerAfterViewController: (UIViewController *)viewController{
-    NSUInteger index = ((MyViewController *) viewController).pageIndex;
-    if (index == NSNotFound) {
+    NSUInteger index = [_uiViewControllers indexOfObject:viewController];
+    if (index == _uiViewControllers.count - 1) {
         return nil;
     }
     index++;
-//    if (index == devices.count) {
-//        return nil;
-//    }
-    return [self viewControllerAtIndex: index];
+    return _uiViewControllers[index];
 }
-
-// helper method
-- (MyViewController *)viewControllerAtIndex:(NSUInteger)index
-{
-    MyViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-//    vc.strImage = devices[index];
-    vc.pageIndex = index;
-    return vc;
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

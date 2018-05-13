@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[MainViewController SaveData]:MainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HistoricalDataViewController FetchData]:HistoricalDataViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultArray[0]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
