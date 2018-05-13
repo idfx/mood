@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  SettingsViewController.h
 //  Mood
 //
 //  Created by Juan on 2018-05-12.
@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyViewController.h"
 
-@interface ViewController : UIViewController
-
+@interface SettingsViewController : MyViewController
 
 @end
-
